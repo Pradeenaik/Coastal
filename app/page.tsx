@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { BadgeCheck, Hotel, Landmark, LucidePhone, MapPin, MessageCircle, ParkingCircle, Phone, PhoneCall, Sparkles, Star } from "lucide-react";
+import { BadgeCheck, Clock, Hotel, Landmark, LucidePhone, Mail, MapPin, MessageCircle, ParkingCircle, Phone, Sparkles, Star } from "lucide-react";
 
 // ─── Framer Motion shim (pure CSS fallback since we use React artifacts) ───
 // We'll use Intersection Observer + CSS transitions instead of framer-motion
@@ -71,7 +71,7 @@ function Navbar() {
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
-  const links = ["Home", "Rooms", "Amenities", "Gallery", "Contact"];
+  const links = ["Home", "Rooms", "Amenities", "Gallery", "Contact", "Location"];
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
@@ -173,10 +173,27 @@ function Navbar() {
 function Hero() {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
+  const [currentImage, setCurrentImage] = useState(0)
+
+
+  const heroImages = [
+  "/hero/murdeshwar.webp",
+  "/hero/murdeshwar2.webp",
+  "/hero/murdeshwar3.webp",
+  "/hero/hero.webp",
+]
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentImage((prev) => (prev + 1) % heroImages.length)
+  }, 5000)
+
+  return () => clearInterval(interval)
+}, [heroImages.length])
 
   return (
     <section id="home" style={{ position: "relative", height: "100vh", minHeight: 600, overflow: "hidden" }}>
-      <img
+      {/* <img
         src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=80"
         alt="Murdeshwar coastal view"
         style={{
@@ -185,7 +202,76 @@ function Hero() {
           transform: loaded ? "scale(1)" : "scale(1.08)",
           transition: "transform 1.8s ease",
         }}
-      />
+      /> */}
+      {/* Background slideshow */}
+<div
+  style={{
+    position: "absolute",
+    inset: 0,
+    overflow: "hidden",
+  }}
+>
+  {heroImages.map((image, index) => (
+    <div
+      key={image}
+      style={{
+        position: "absolute",
+        inset: 0,
+
+        backgroundImage: `url(${image})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+
+        opacity: currentImage === index ? 1 : 0,
+
+        transform:
+          currentImage === index
+            ? loaded
+              ? "scale(1.02)"
+              : "scale(1.08)"
+            : "scale(1)",
+
+        transition:
+          "opacity 1.8s ease-in-out, transform 7s ease",
+
+        willChange: "opacity, transform",
+      }}
+    />
+  ))}
+
+  {/* dark cinematic overlay */}
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      // background:
+        // "linear-gradient(180deg, rgba(10,35,66,0.58) 0%, rgba(10,35,66,0.42) 40%, rgba(10,35,66,0.78) 100%)",
+    }}
+  />
+
+  {/* subtle luxury tint */}
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "radial-gradient(circle at center, rgba(42,82,152,0.16), transparent 70%)",
+      mixBlendMode: "screen",
+    }}
+  />
+
+  {/* wave texture */}
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      opacity: 0.06,
+      backgroundImage:
+        "repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(232,213,176,0.5) 40px, rgba(232,213,176,0.5) 41px)",
+    }}
+  />
+</div>
+      
 
       {/* Gradient overlay */}
       <div style={{
@@ -1097,7 +1183,7 @@ function Booking() {
 
   const handleWA = () => {
     const msg = `Hello! I'd like to book a room.\nName: ${form.name || "Guest"}\nPhone: ${form.phone}\nCheck-in: ${form.checkin}\nCheck-out: ${form.checkout}\nGuests: ${form.guests}\nRoom Type: ${form.roomType || "Not specified"}`;
-    window.open(`https://wa.me/919876543210?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/917019639916?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const inputStyle = {
@@ -1227,7 +1313,7 @@ function Booking() {
 function MapSection() {
   const [ref, visible] = useReveal();
   return (
-    <section style={{ padding: "80px 24px 0", background: "#f7f9fc" }}>
+    <section id="location" style={{ padding: "80px 24px 0", background: "#f7f9fc" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div ref={ref} className={`reveal ${visible ? "visible" : ""}`} style={{ textAlign: "center", marginBottom: 40 }}>
           <div style={{ color: "#2a5298", fontSize: 13, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
@@ -1277,8 +1363,8 @@ function Footer() {
           {/* Brand */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-              <span style={{ fontSize: 28 }}>🏛️</span>
-              <div className="font-display" style={{ color: "#fff", fontSize: 22, fontWeight: 600 }}>Murdeshwar Lodge</div>
+              <span style={{ fontSize: 28 }}><Image src="/Logo.png" alt="Logo" width={80} height={40} style={{ display: "block" }} /></span>
+              <div className="font-display" style={{ color: "#fff", fontSize: 22, fontWeight: 600 }}>Coastal Lodge</div>
             </div>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 1.75, fontWeight: 300 }}>
               Your peaceful coastal retreat near the iconic Murdeshwar Temple, Karnataka.
@@ -1301,9 +1387,9 @@ function Footer() {
               Quick Links
             </h4>
             <ul style={{ listStyle: "none" }}>
-              {["About Us", "Rooms & Pricing", "Amenities", "Gallery", "Nearby Attractions", "Book Now"].map(link => (
+              {["Home", "Rooms", "Amenities", "Gallery", "Location"].map(link => (
                 <li key={link} style={{ marginBottom: 10 }}>
-                  <a href="#" style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none", transition: "color 0.3s ease" }}
+                  <a href={`#${link.toLowerCase().replace(/\s+/g, '-')}`} style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none", transition: "color 0.3s ease" }}
                     onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => e.currentTarget.style.color = "#e8d5b0"}
                     onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => e.currentTarget.style.color = "rgba(255,255,255,0.5)"}>
                     {link}
@@ -1314,16 +1400,16 @@ function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
+          <div id="contact">
             <h4 style={{ color: "#e8d5b0", fontSize: 14, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 20 }}>
               Contact Us
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {[
-                { icon: "📍", text: "Near Murdeshwar Beach,\nMurdeshwar – 581350, Karnataka" },
-                { icon: "📞", text: "+91 7019639916" },
-                { icon: "📧", text: "stay@murdeshwarlodge.com" },
-                { icon: "⏰", text: "Check-in: 12:00 PM | Check-out: 11:00 AM" },
+                { icon: <MapPin className="text-red-500"/>, text: "Near Murdeshwar Beach,\nMurdeshwar – 581350, Karnataka" },
+                { icon: <Phone className="text-green-500"/>, text: "+91 7019639916" },
+                { icon: <Mail className="text-blue-500"/>, text: "stay@murdeshwarlodge.com" },
+                { icon: <Clock className="text-yellow-500"/>, text: "Check-in: 12:00 PM | Check-out: 11:00 AM" },
               ].map((item, i) => (
                 <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                   <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
