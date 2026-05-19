@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { BadgeCheck, Clock, Hotel, Landmark, LucidePhone, Mail, MapPin, MessageCircle, ParkingCircle, Phone, Sparkles, Star } from "lucide-react";
+import { ArrowRight, BadgeCheck, Clock, Hotel, Landmark, LucidePhone, Mail, MapPin, MessageCircle, ParkingCircle, Phone, Sparkles, Star } from "lucide-react";
 
 // ─── Framer Motion shim (pure CSS fallback since we use React artifacts) ───
 // We'll use Intersection Observer + CSS transitions instead of framer-motion
@@ -932,7 +932,7 @@ function Gallery() {
     { src: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80", label: "Pool & Exterior", tall: true },
     { src: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80", label: "Room Interior" },
     { src: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80", label: "Murdeshwar Beach" },
-    { src: "https://images.unsplash.com/photo-1582610116397-edb318620f90?w=600&q=80", label: "Temple View", tall: true },
+    { src: "/hero/murdeshwar.webp", label: "Temple View", tall: true },
     { src: "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=600&q=80", label: "Night Ambience" },
     { src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80", label: "Deluxe Room" },
   ];
@@ -1004,71 +1004,418 @@ function GalleryItem({ photo, style }: { photo: GalleryPhoto; style?: React.CSSP
 }
 
 // ─── NEARBY ATTRACTIONS ───────────────────────────────────────────────────
+// function Attractions() {
+//   const [ref, visible] = useReveal();
+//   const spots = [
+//     { icon: "🏛️", name: "Murdeshwar Temple", dist: "0.5 km", desc: "Iconic 20-storey gopura and towering Shiva statue", color: "#fff3e0" },
+//     { icon: "🏖️", name: "Murdeshwar Beach", dist: "0.3 km", desc: "Pristine beach perfect for sunrise walks and water activities", color: "#e3f2fd" },
+//     { icon: "🤿", name: "Scuba Diving", dist: "At beach", desc: "Explore vibrant underwater life with certified instructors", color: "#e8f5e9" },
+//     { icon: "🌄", name: "Gokarna Trip", dist: "~1 hr drive", desc: "Visit the serene temple town and Om Beach", color: "#fce4ec" },
+//     { icon: "🚂", name: "Railway Station", dist: "1 km", desc: "Well-connected to Mangalore, Goa, and Mumbai", color: "#f3e5f5" },
+//   ];
+
+//   return (
+//     <section style={{ padding: "100px 24px", background: "#f7f9fc" }}>
+//       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+//         <div ref={ref} className={`reveal ${visible ? "visible" : ""}`} style={{ textAlign: "center", marginBottom: 64 }}>
+//           <div style={{ color: "#2a5298", fontSize: 13, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
+//             Explore
+//           </div>
+//           <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", color: "#0a2342", fontWeight: 600 }}>
+//             Nearby Attractions
+//           </h2>
+//         </div>
+
+//         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
+//           {spots.map((spot, i) => <AttractionCard key={i} spot={spot} delay={i * 100} />)}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
 function Attractions() {
-  const [ref, visible] = useReveal();
+  const [ref, visible] = useReveal()
+
   const spots = [
-    { icon: "🏛️", name: "Murdeshwar Temple", dist: "0.5 km", desc: "Iconic 20-storey gopura and towering Shiva statue", color: "#fff3e0" },
-    { icon: "🏖️", name: "Murdeshwar Beach", dist: "0.3 km", desc: "Pristine beach perfect for sunrise walks and water activities", color: "#e3f2fd" },
-    { icon: "🤿", name: "Scuba Diving", dist: "At beach", desc: "Explore vibrant underwater life with certified instructors", color: "#e8f5e9" },
-    { icon: "🌄", name: "Gokarna Trip", dist: "~1 hr drive", desc: "Visit the serene temple town and Om Beach", color: "#fce4ec" },
-    { icon: "🚂", name: "Railway Station", dist: "1 km", desc: "Well-connected to Mangalore, Goa, and Mumbai", color: "#f3e5f5" },
-  ];
+    {
+      image:
+        "/hero/murdeshwar.webp",
+      name: "Murdeshwar Temple",
+      dist: "0.5 km",
+      desc: "Iconic 20-storey gopura and towering Shiva statue",
+      tag: "Spiritual",
+    },
+    {
+      image:
+        "/hero/hero.webp",
+      name: "Murdeshwar Beach",
+      dist: "0.3 km",
+      desc: "Pristine beach perfect for sunrise walks and water activities",
+      tag: "Beach",
+    },
+    {
+      image:
+        "/hero/scuba.webp",
+      name: "Scuba Diving",
+      dist: "At beach",
+      desc: "Explore vibrant underwater life with certified instructors",
+      tag: "Adventure",
+    },
+    {
+      image:
+        "/hero/gokarna.webp",
+      name: "Gokarna Trip",
+      dist: "~1 hr drive",
+      desc: "Visit the serene temple town and Om Beach",
+      tag: "Road Trip",
+    },
+    {
+      image:
+        "/hero/railway-station.webp",
+      name: "Railway Station",
+      dist: "1 km",
+      desc: "Well-connected to Mangalore, Goa, and Mumbai",
+      tag: "Travel",
+    },
+  ]
 
   return (
-    <section style={{ padding: "100px 24px", background: "#f7f9fc" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div ref={ref} className={`reveal ${visible ? "visible" : ""}`} style={{ textAlign: "center", marginBottom: 64 }}>
-          <div style={{ color: "#2a5298", fontSize: 13, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
-            Explore
+    <section
+      style={{
+        padding: "110px 24px",
+        background:
+          "linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* background glow */}
+      <div
+        style={{
+          position: "absolute",
+          top: -200,
+          right: -150,
+          width: 500,
+          height: 500,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(42,82,152,0.08), transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
+        {/* heading */}
+        <div
+          ref={ref}
+          className={`reveal ${visible ? "visible" : ""}`}
+          style={{
+            textAlign: "center",
+            marginBottom: 70,
+          }}
+        >
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "8px 16px",
+              borderRadius: 999,
+              background: "rgba(42,82,152,0.08)",
+              border: "1px solid rgba(42,82,152,0.08)",
+              marginBottom: 18,
+            }}
+          >
+            <Sparkles
+              size={14}
+              color="#2a5298"
+            />
+
+            <span
+              style={{
+                color: "#2a5298",
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+              }}
+            >
+              Explore
+            </span>
           </div>
-          <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", color: "#0a2342", fontWeight: 600 }}>
+
+          <h2
+            className="font-display"
+            style={{
+              fontSize: "clamp(2.2rem, 4vw, 3.8rem)",
+              color: "#0a2342",
+              fontWeight: 600,
+              lineHeight: 1.08,
+              marginBottom: 18,
+              letterSpacing: "-0.03em",
+            }}
+          >
             Nearby Attractions
           </h2>
+
+          <p
+            style={{
+              maxWidth: 650,
+              margin: "0 auto",
+              color: "rgba(10,35,66,0.68)",
+              fontSize: 16,
+              lineHeight: 1.8,
+            }}
+          >
+            Discover beaches, temples, adventure experiences, and coastal
+            escapes just minutes away from your stay.
+          </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
-          {spots.map((spot, i) => <AttractionCard key={i} spot={spot} delay={i * 100} />)}
+        {/* modern image cards */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: 24,
+          }}
+        >
+          {spots.map((spot, i) => (
+            <AttractionCard
+              key={i}
+              spot={spot}
+              delay={i * 100}
+            />
+          ))}
         </div>
       </div>
     </section>
-  );
+  )
 }
 
-type Spot = {
-  icon: string
+type AttractionSpot = {
+  image: string
   name: string
   dist: string
   desc: string
-  color: string
+  tag: string
 }
 
+function AttractionCard({
+  spot,
+  delay,
+}: {
+  spot: AttractionSpot
+  delay: number
+}) {
+  const [ref, visible] = useReveal()
 
-function AttractionCard({ spot, delay } : {spot : Spot; delay: number}) {
-  const [ref, visible] = useReveal();
   return (
-    <div ref={ref} className={`card-hover reveal ${visible ? "visible" : ""}`}
+    <div
+      ref={ref}
+      className={`reveal ${visible ? "visible" : ""}`}
       style={{
-        background: "#fff", borderRadius: 20, padding: 24,
-        boxShadow: "0 4px 20px rgba(10,35,66,0.07)",
-        border: "1px solid rgba(42,82,152,0.06)",
-        transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms, box-shadow 0.3s ease`,
-      }}>
-      <div style={{
-        width: 56, height: 56, borderRadius: 16,
-        background: spot.color, display: "flex", alignItems: "center",
-        justifyContent: "center", fontSize: 28, marginBottom: 16,
-      }}>{spot.icon}</div>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-        <h3 style={{ color: "#0a2342", fontSize: 16, fontWeight: 600 }}>{spot.name}</h3>
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 28,
+        background: "#fff",
+
+        transition: `
+          opacity 0.8s ease ${delay}ms,
+          transform 0.8s ease ${delay}ms,
+          box-shadow 0.35s ease
+        `,
+
+        boxShadow:
+          "0 10px 40px rgba(10,35,66,0.08)",
+
+        cursor: "pointer",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform =
+          "translateY(-10px)"
+
+        e.currentTarget.style.boxShadow =
+          "0 25px 60px rgba(10,35,66,0.16)"
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform =
+          "translateY(0px)"
+
+        e.currentTarget.style.boxShadow =
+          "0 10px 40px rgba(10,35,66,0.08)"
+      }}
+    >
+      {/* image */}
+      <div
+        style={{
+          position: "relative",
+          height: 240,
+          overflow: "hidden",
+        }}
+      >
+        <img
+          src={spot.image}
+          alt={spot.name}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transition: "transform 0.8s ease",
+          }}
+        />
+
+        {/* overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.55), transparent 60%)",
+          }}
+        />
+
+        {/* floating tag */}
+        <div
+          style={{
+            position: "absolute",
+            top: 16,
+            left: 16,
+
+            padding: "7px 14px",
+            borderRadius: 999,
+
+            background: "rgba(255,255,255,0.16)",
+            backdropFilter: "blur(12px)",
+
+            border: "1px solid rgba(255,255,255,0.18)",
+
+            color: "#fff",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+          }}
+        >
+          {spot.tag}
+        </div>
+
+        {/* distance badge */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 18,
+            right: 18,
+
+            padding: "8px 14px",
+            borderRadius: 999,
+
+            background: "#fff",
+
+            color: "#0a2342",
+            fontSize: 12,
+            fontWeight: 700,
+
+            boxShadow:
+              "0 8px 25px rgba(0,0,0,0.12)",
+          }}
+        >
+          {spot.dist}
+        </div>
       </div>
-      <div style={{
-        display: "inline-block", background: "#e8f0fe", color: "#2a5298",
-        fontSize: 12, fontWeight: 600, padding: "3px 10px", borderRadius: 50, marginBottom: 12,
-      }}>{spot.dist}</div>
-      <p style={{ color: "#5a7a9a", fontSize: 14, lineHeight: 1.65, fontWeight: 300 }}>{spot.desc}</p>
+
+      {/* content */}
+      <div
+        style={{
+          padding: "24px 22px 24px",
+        }}
+      >
+        <h3
+          className="font-display"
+          style={{
+            fontSize: 28,
+            color: "#0a2342",
+            fontWeight: 600,
+            marginBottom: 12,
+            lineHeight: 1.1,
+          }}
+        >
+          {spot.name}
+        </h3>
+
+        <p
+          style={{
+            color: "rgba(10,35,66,0.68)",
+            fontSize: 15,
+            lineHeight: 1.8,
+            marginBottom: 18,
+          }}
+        >
+          {spot.desc}
+        </p>
+
+        {/* bottom link */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+
+            color: "#2a5298",
+            fontSize: 14,
+            fontWeight: 700,
+          }}
+        >
+          <span>Explore attraction</span>
+
+          <ArrowRight
+            size={16}
+            strokeWidth={2.4}
+          />
+        </div>
+      </div>
     </div>
-  );
+  )
 }
+
+
+
+
+// function AttractionCard({ spot, delay } : {spot : Spot; delay: number}) {
+//   const [ref, visible] = useReveal();
+//   return (
+//     <div ref={ref} className={`card-hover reveal ${visible ? "visible" : ""}`}
+//       style={{
+//         background: "#fff", borderRadius: 20, padding: 24,
+//         boxShadow: "0 4px 20px rgba(10,35,66,0.07)",
+//         border: "1px solid rgba(42,82,152,0.06)",
+//         transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms, box-shadow 0.3s ease`,
+//       }}>
+//       <div style={{
+//         width: 56, height: 56, borderRadius: 16,
+//         background: spot.color, display: "flex", alignItems: "center",
+//         justifyContent: "center", fontSize: 28, marginBottom: 16,
+//       }}>{spot.icon}</div>
+//       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+//         <h3 style={{ color: "#0a2342", fontSize: 16, fontWeight: 600 }}>{spot.name}</h3>
+//       </div>
+//       <div style={{
+//         display: "inline-block", background: "#e8f0fe", color: "#2a5298",
+//         fontSize: 12, fontWeight: 600, padding: "3px 10px", borderRadius: 50, marginBottom: 12,
+//       }}>{spot.dist}</div>
+//       <p style={{ color: "#5a7a9a", fontSize: 14, lineHeight: 1.65, fontWeight: 300 }}>{spot.desc}</p>
+//     </div>
+//   );
+// }
 
 // ─── TESTIMONIALS ─────────────────────────────────────────────────────────
 function Testimonials() {
